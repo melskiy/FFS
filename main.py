@@ -38,7 +38,7 @@ def main():
             data = [tuple(map(float, line.decode().strip('\r\n').split(', '))) for line in file.readlines()]
             afsa_params = AfsaRequest(max_iter=max_iter, N=N, v=v, theta=theta, eta=eta, k=k)
 
-            result = AFSA.resolve(
+            result = AFSA().resolve(
                 adjacency_matrix=data,
                 **afsa_params.model_dump(),
             )
@@ -46,28 +46,28 @@ def main():
             for result_ in result:
                 st.code(result_)
             
-            gr = nx.Graph()
-            for i, line in enumerate(data):
-                for j, val in enumerate(line):
-                    if val == float('inf'):
-                        continue
-                    gr.add_edge(i, j, weight=val)
+            # gr = nx.Graph()
+            # for i, line in enumerate(data):
+            #     for j, val in enumerate(line):
+            #         if val == float('inf'):
+            #             continue
+            #         gr.add_edge(i, j, weight=val)
 
-            pos = nx.spring_layout(gr)
-            weights = nx.get_edge_attributes(gr, 'weight')
+            # pos = nx.spring_layout(gr)
+            # weights = nx.get_edge_attributes(gr, 'weight')
 
-            nx.draw_networkx_nodes(gr, pos)
-            nx.draw_networkx_edges(gr, pos)
-            nx.draw_networkx_labels(gr, pos)
-            nx.draw_networkx_edge_labels(gr, pos, edge_labels=weights)
+            # nx.draw_networkx_nodes(gr, pos)
+            # nx.draw_networkx_edges(gr, pos)
+            # nx.draw_networkx_labels(gr, pos)
+            # nx.draw_networkx_edge_labels(gr, pos, edge_labels=weights)
 
-            answer = result[0].data
-            answer = [*pairwise(answer), (answer[-1], answer[0])]
+            # answer = result[0].data
+            # answer = [*pairwise(answer), (answer[-1], answer[0])]
 
-            nx.draw_networkx_edges(gr, pos, edgelist=answer, edge_color='red')
+            # # nx.draw_networkx_edges(gr, pos, edgelist=answer, edge_color='red')
             
-            plt.axis('off')
-            st.pyplot(plt)
+            # # plt.axis('off')
+            # # st.pyplot(plt)
 
 
 if __name__ == '__main__':
